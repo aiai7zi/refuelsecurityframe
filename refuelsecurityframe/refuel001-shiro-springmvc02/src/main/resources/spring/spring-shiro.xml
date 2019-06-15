@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--1.配置自定义的realm-->
+    <bean id="userRealm" class="com.refuel.realm.UserRealm"/>
+    <!--2.配置安全管理器-->
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="userRealm"></property>
+    </bean>
+    <!--3.shiro过滤器-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"></property>
+        <!--登录的url-->
+        <property name="loginUrl" value="/login"></property>
+        <!--认证失败跳转的页面-->
+        <property name="unauthorizedUrl" value="nopermission.jsp"></property>
+
+        <!-- 过虑器链定义，从上向下顺序执行，一般将/**放在最下边 -->
+        <property name="filterChainDefinitions">
+            <value>
+                <!-- 对静态资源设置匿名访问 -->
+                /favicon.ico = anon
+                <!-- /** = authc 所有url都必须认证通过才可以访问-->
+                /** = authc
+            </value>
+        </property>
+    </bean>
+</beans>
