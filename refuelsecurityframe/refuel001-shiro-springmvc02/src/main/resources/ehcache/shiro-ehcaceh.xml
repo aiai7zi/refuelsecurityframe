@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+      <defaultCache
+          maxElementsInMemory="100"
+          eternal="false"
+          timeToIdleSeconds="120"
+          timeToLiveSeconds="120"
+          memoryStoreEvictionPolicy="LRU">
+      </defaultCache>
+    <!--maxElementsInMemory：最多存储数量 eternal：是否固定化 timeToIdleSeconds：空闲时间 timeToLiveSeconds：存活时间 memoryStoreEvictionPolicy:策略移除 -->
+</ehcache>

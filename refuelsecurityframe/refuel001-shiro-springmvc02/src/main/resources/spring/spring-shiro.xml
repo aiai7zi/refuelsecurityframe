@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+">
     <!--1.配置自定义的realm-->
-    <bean id="userRealm" class="com.refuel.realm.UserRealm"/>
+    <bean id="userRealm" class="com.refuel.realm.UserRealm">
+          <!--加密器-->
+        <property name="credentialsMatcher">
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <!--加密算法-->
+                <property name="hashAlgorithmName" value="md5"/>
+                 <!--加密次数-->
+                <property name="hashIterations" value="3"/>
+            </bean>
+        </property>
+
+    </bean>
     <!--2.配置安全管理器-->
 
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="userRealm"></property>
+        <!--添加缓存-->
+        <property name="cacheManager" ref="cacheManager"/>
     </bean>
     <!--3.shiro过滤器-->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
@@ -22,9 +39,40 @@
             <value>
                 <!-- 对静态资源设置匿名访问 -->
                 /favicon.ico = anon
+                <!--退出-->
+                /logout=logout
                 <!-- /** = authc 所有url都必须认证通过才可以访问-->
                 /** = authc
             </value>
         </property>
     </bean>
+
+    <!--开启shiro注解支持-->
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+    <!--定义需要特殊处理的异常，用类名或完全路径名作为key,异常页面作为值-->
+    <!--shiro权限 异常处理-->
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="org.apache.shiro.authz.UnauthorizedException">redirect:/nopermission.jsp</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!--缓存管理器-->
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManager">
+            <bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+                <property name="configLocation" value="classpath:ehcache/shiro-ehcaceh.xml"></property>
+                <property name="shared" value="true"/>
+            </bean>
+        </property>
+    </bean>
+    
+    
+    
+
+
 </beans>

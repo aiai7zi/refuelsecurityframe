@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.refuel.mapper.RoleMapper" >
+    <!--查询用户角色-->
+     <select id="findRoleByUserId" resultType="com.refuel.entity.Role" parameterType="java.lang.Integer">
+        SELECT
+            t1.*
+        FROM
+            t_role t1
+        LEFT JOIN t_user_role t2 ON t1.id = t2.role_id
+        WHERE
+            t2.user_id = #{userId}
+
+
+     </select>
+
+</mapper>

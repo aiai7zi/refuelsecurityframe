@@ -1,0 +1,35 @@
+CREATE TABLE `t_user` (
+  `id` int(9) NOT NULL AUTO_INCREMENT,
+  `username` varchar(33) DEFAULT NULL COMMENT '用户名',
+   `password` varchar(33) DEFAULT NULL COMMENT '密码',
+  `logic_flag` tinyint(2) DEFAULT 0 COMMENT '逻辑删除',
+  PRIMARY KEY (`id`)
+)
+CREATE TABLE `t_user_role` (
+  `user_id` int(9) NOT NULL,
+`role_id` int(9) NOT NULL,
+  PRIMARY KEY (`user_id`,`role_id`)
+)
+
+
+CREATE TABLE `t_role` (
+  `id` int(9) NOT NULL AUTO_INCREMENT,
+  `rolename` varchar(33) DEFAULT NULL COMMENT '角色名',
+   `roledescribe` varchar(33) DEFAULT NULL COMMENT '角色描述',
+
+  PRIMARY KEY (`id`)
+)
+CREATE TABLE `t_role_permission` (
+
+`role_id` int(9) NOT NULL,
+`permission_id` int(9) NOT NULL,
+  PRIMARY KEY (`role_id`,permission_id)
+)
+
+CREATE TABLE `t_permission` (
+  `id` int(9) NOT NULL AUTO_INCREMENT,
+  `permissionname` varchar(33) DEFAULT NULL COMMENT '权限名',
+   `permissiondescribe` varchar(33) DEFAULT NULL COMMENT '权限描述',
+
+  PRIMARY KEY (`id`)
+)

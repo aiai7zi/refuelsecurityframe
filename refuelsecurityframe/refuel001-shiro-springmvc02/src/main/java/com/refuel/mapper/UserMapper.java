@@ -1,5 +1,6 @@
 package com.refuel.mapper;
 
+import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.refuel.entity.User;
 
 /**
@@ -10,5 +11,5 @@ import com.refuel.entity.User;
  * @Version V1.0
  **/
 
-public class UserMapper extends BaseMapper<User> {
+public interface UserMapper extends BaseMapper<User> {
 }

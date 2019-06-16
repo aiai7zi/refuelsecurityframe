@@ -17,4 +17,18 @@ public class MainController {
     public String main(){
         return "main";
     }
+    @RequestMapping("/emp")
+    public String user(){
+        return "employee";
+    }
+    @RequestMapping("/dep")
+    public String dep(){
+        return "department";
+    }
+
+    @RequestMapping("/logout")
+    public String logout(){
+        return "login";
+    }
+
 }
